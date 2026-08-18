@@ -280,17 +280,6 @@ bool calibrate() {
 }
 
 
-void configureAS5600FastMode() {
-  Wire.beginTransmission(AS5600_ADDR);
-  Wire.write(0x07);  // CONF register MSB
-  Wire.write(0x02);  // MSB: Watchdog OFF, FTH = 001 (6 LSB threshold)
-  Wire.write(0x98);  // LSB: SF = 11 (2x Fast Filter), PWMF = 00, OUTS = 00 (Analog/Digital)
-  if (Wire.endTransmission() == 0) {
-    Serial.println("✓ AS5600 configured for TRUE low-latency Fast Mode!");
-  } else {
-    Serial.println("✗ AS5600 configuration FAILED!");
-  }
-}
 
 void setup() {
   Serial.begin(moniter_speed);
@@ -298,7 +287,6 @@ void setup() {
   Wire.begin();
   Wire.setClock(400000); // Fast I2C Bus (400kHz)
   Wire.setWireTimeout(3000, true);
-  configureAS5600FastMode();
 
   pinMode(STEP_PIN, OUTPUT);
   pinMode(DIR_PIN, OUTPUT);
